@@ -21,9 +21,8 @@ public class ServerTime implements Serializable{
     public Date getUtc() {
         return utc;
     }
-
-    public void setUtc(Date utc) {
-        this.utc = utc;
-    }    
-        
+    
+    public long getH(){
+        return H;
+    }
 }

@@ -13,6 +13,7 @@ public class Server {
     public static void main(String[] args) {        
         try{            
             ServerSocket serverSocket = new ServerSocket(5555);          
+            serverSocket.setReuseAddress(true);
             while (true){
                 System.out.println("Waiting connection...");
                 Socket socket = serverSocket.accept();

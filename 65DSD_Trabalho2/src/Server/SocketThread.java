@@ -14,9 +14,11 @@ import java.util.Date;
 public class SocketThread extends Thread{
     
     private Socket connection;
+    private String clientPort;
 
     public SocketThread(Socket connection) {
         this.connection = connection;
+        clientPort = connection.getLocalAddress().toString();
     }
 
     @Override
@@ -24,11 +26,12 @@ public class SocketThread extends Thread{
         try{
             ObjectOutputStream output = new ObjectOutputStream(connection.getOutputStream());
             ObjectInputStream input = new ObjectInputStream(connection.getInputStream());
+            long h1 = System.currentTimeMillis();
             
             String msg = input.readUTF();
             
             if (msg.equals("Send me the time")){       
-                ServerTime time = new ServerTime(0, new Date());
+                ServerTime time = new ServerTime(System.currentTimeMillis() - h1, new Date());
                 output.writeObject(time);
                 output.flush();
             }
@@ -44,7 +47,7 @@ public class SocketThread extends Thread{
                 e2.printStackTrace();
             }
         }finally{
-            System.out.println("Thread " + this.getId() + " finished.");
+            System.out.println("Thread " + this.getId() + " finished " + clientPort);
         }
     }  
     
