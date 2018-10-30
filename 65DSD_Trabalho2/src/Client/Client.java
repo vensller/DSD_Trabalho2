@@ -17,7 +17,7 @@ public class Client {
 
     public static void main(String[] args) throws ClassNotFoundException {        
         try{
-            String endereco = "";
+            String endereco = "10.60.93.0";
             while (true){
                 long t0 = System.currentTimeMillis();
                 Socket socket = new Socket(endereco, 5555);            
@@ -34,7 +34,7 @@ public class Client {
                 Calendar c = Calendar.getInstance(); 
                 c.setTime(time.getUtc()); 
                 c.add(Calendar.MILLISECOND, (int) p);
-                SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy hh:MM:ss");
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss:SSS z");
                 System.out.println(format.format(c.getTime()));
 
                 output.close();
