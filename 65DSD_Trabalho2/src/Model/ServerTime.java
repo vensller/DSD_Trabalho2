@@ -13,9 +13,9 @@ public class ServerTime implements Serializable{
     private long H;
     private Date utc;
 
-    public ServerTime(long H, Date utc) {
-        this.H = H;
+    public ServerTime(long H, Date utc) {    
         this.utc = utc;
+        this.H = System.currentTimeMillis() - H;
     }   
 
     public Date getUtc() {

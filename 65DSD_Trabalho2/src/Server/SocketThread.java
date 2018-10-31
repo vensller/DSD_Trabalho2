@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -30,8 +31,8 @@ public class SocketThread extends Thread{
             
             String msg = input.readUTF();
             
-            if (msg.equals("Send me the time")){       
-                ServerTime time = new ServerTime(System.currentTimeMillis() - h1, new Date());
+            if (msg.equals("Send me the time")){                       
+                ServerTime time = new ServerTime(h1, new Date());                
                 output.writeObject(time);
                 output.flush();
             }
