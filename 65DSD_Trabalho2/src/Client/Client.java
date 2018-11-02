@@ -1,26 +1,41 @@
 package Client;
 
+import Controller.ClockController;
 import Model.ServerTime;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author Ivens
  */
-public class Client {
+public class Client extends Thread{
 
-    public static void main(String[] args) throws ClassNotFoundException {        
+    private String adress;
+    private int port;
+    private long sleepMilis;
+    private Date date;
+    private ClockController controller;
+    
+    public Client(String adress, int port, long sleepMilis, ClockController controller){
+        this.adress = adress;
+        this.port = port;
+        this.sleepMilis = sleepMilis;
+        this.date = new Date();
+        this.controller = controller;
+    }
+    
+    @Override
+    public void run() {
         try{
-            String endereco = "10.60.93.0";
             while (true){
                 long t0 = System.currentTimeMillis();
-                Socket socket = new Socket(endereco, 5555);            
+                Socket socket = new Socket(this.adress, this.port);            
                 socket.setReuseAddress(true);            
                 ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
@@ -29,19 +44,27 @@ public class Client {
                 output.flush();                      
 
                 ServerTime time = (ServerTime) input.readObject();
-                long t1 = System.currentTimeMillis();
-                long p = (t1 - t0 - time.getH()) / 2;
+                
                 Calendar c = Calendar.getInstance(); 
-                c.setTime(time.getUtc()); 
-                c.add(Calendar.MILLISECOND, (int) p);
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss:SSS z");
-                System.out.println(format.format(c.getTime()));
+                c.setTime(time.getUtc());                 
+                
+                long t1 = System.currentTimeMillis();
+                int p = (int)(t1 - t0 - time.getH()) / 2;
+                
+                if (time.getUtc().before(date)){
+                    p = p / 2;
+                }                
+                
+                c.add(Calendar.MILLISECOND, p);                
+                date = c.getTime();
+                controller.attDate(date);
 
                 output.close();
                 input.close();
                 socket.close();
+                sleep(sleepMilis);
             }
-        }catch(IOException e){
+        }catch(IOException | ClassNotFoundException | InterruptedException e){
             e.printStackTrace();
         }
     }

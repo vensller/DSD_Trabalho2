@@ -1,6 +1,7 @@
 package Server;
 
 import Model.ServerTime;
+import Controller.ServerController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -16,10 +17,13 @@ public class SocketThread extends Thread{
     
     private Socket connection;
     private String clientPort;
+    private ServerController controller;
 
-    public SocketThread(Socket connection) {
+    public SocketThread(Socket connection, ServerController controller) {
         this.connection = connection;
-        clientPort = connection.getLocalAddress().toString();
+        this.controller = controller;
+        clientPort = connection.getLocalAddress().toString(); 
+        controller.log("Client " + clientPort + " connected, initializing thread " + getId() + "!");
     }
 
     @Override
@@ -48,7 +52,7 @@ public class SocketThread extends Thread{
                 e2.printStackTrace();
             }
         }finally{
-            System.out.println("Thread " + this.getId() + " finished " + clientPort);
+            controller.log("Thread " + this.getId() + " finished " + clientPort);
         }
     }  
     
