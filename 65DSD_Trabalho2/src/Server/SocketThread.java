@@ -22,7 +22,7 @@ public class SocketThread extends Thread{
     public SocketThread(Socket connection, ServerController controller) {
         this.connection = connection;
         this.controller = controller;
-        clientPort = connection.getLocalAddress().toString(); 
+        clientPort = connection.getInetAddress().toString(); 
         controller.log("Client " + clientPort + " connected, initializing thread " + getId() + "!");
     }
 

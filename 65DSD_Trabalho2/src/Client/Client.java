@@ -5,10 +5,10 @@ import Model.ServerTime;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  *
@@ -31,11 +31,11 @@ public class Client extends Thread{
     }
     
     @Override
-    public void run() {
-        try{
-            while (true){
-                long t0 = System.currentTimeMillis();
-                Socket socket = new Socket(this.adress, this.port);            
+    public void run() {        
+        while (true){
+            try{
+                long t0 = System.currentTimeMillis();                
+                Socket socket = new Socket(this.adress, this.port);                            
                 socket.setReuseAddress(true);            
                 ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
@@ -70,10 +70,12 @@ public class Client extends Thread{
                 input.close();
                 socket.close();
                 sleep(sleepMilis);
+            }catch(ConnectException ex){
+                continue;
+            }catch(IOException | ClassNotFoundException | InterruptedException e){
+                e.printStackTrace();
             }
-        }catch(IOException | ClassNotFoundException | InterruptedException e){
-            e.printStackTrace();
-        }
+        }        
     }
     
 }
