@@ -15,6 +15,7 @@ public class ServerView extends javax.swing.JFrame implements ServerObserver{
         initComponents();
         controller = new ServerController();
         controller.observServer(this);
+        controller.initServer();
     }
 
     @SuppressWarnings("unchecked")
