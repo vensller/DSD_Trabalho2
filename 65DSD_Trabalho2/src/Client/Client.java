@@ -45,18 +45,25 @@ public class Client extends Thread{
 
                 ServerTime time = (ServerTime) input.readObject();
                 
-                Calendar c = Calendar.getInstance(); 
-                c.setTime(time.getUtc());                 
+                Calendar c = Calendar.getInstance();                                  
                 
                 long t1 = System.currentTimeMillis();
                 int p = (int)(t1 - t0 - time.getH()) / 2;
                 
                 if (time.getUtc().before(date)){
-                    p = p / 2;
-                }                
+                    double aux = p / 2;
+                    p = (int) Math.ceil(aux);
+                    if (p < 0){
+                        p = 1;
+                    }
+                    c.setTime(date);
+                }else{                        
+                    c.setTime(time.getUtc());                    
+                }
                 
                 c.add(Calendar.MILLISECOND, p);                
                 date = c.getTime();
+                
                 controller.attDate(date);
 
                 output.close();
