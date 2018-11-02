@@ -20,11 +20,13 @@ public class Main {
             case "1" : 
                 ServerView serverView = new ServerView();
                 serverView.setVisible(true);
+                serverView.init();
                 break;                       
                 
             case "2" :
                 ClockView clockView = new ClockView();
                 clockView.setVisible(true);
+                clockView.init();
                 break;
                 
             default : System.exit(0);

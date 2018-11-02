@@ -24,7 +24,6 @@ public class ClockView extends javax.swing.JFrame implements ClockObserver{
         controller.observClock(this);
         actualDate = new Date();
         configureLabelsWithActualDate();
-        controller.initClock();
     }
 
     @SuppressWarnings("unchecked")
@@ -219,5 +218,9 @@ public class ClockView extends javax.swing.JFrame implements ClockObserver{
     public synchronized void attDate(Date newDate) {
         actualDate = newDate;
         configureLabelsWithActualDate();
+    }
+    
+    public void init(){        
+        controller.initClock();
     }
 }

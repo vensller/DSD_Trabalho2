@@ -33,11 +33,7 @@ public class ServerController {
     }
     
     public void initServer(){
-        int log = 0;
-        while (true){
-            this.log(log +"");
-            log++;
-        }
+        server.execute();
     }
     
 }

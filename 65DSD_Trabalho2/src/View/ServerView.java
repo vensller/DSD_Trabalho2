@@ -2,6 +2,7 @@ package View;
 
 import Controller.ServerController;
 import Controller.ServerObserver;
+import javax.swing.JScrollBar;
 
 /**
  *
@@ -14,9 +15,8 @@ public class ServerView extends javax.swing.JFrame implements ServerObserver{
     public ServerView() {
         initComponents();
         controller = new ServerController();
-        controller.observServer(this);
-        controller.initServer();
-    }
+        controller.observServer(this);          
+    }       
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -36,7 +36,7 @@ public class ServerView extends javax.swing.JFrame implements ServerObserver{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -51,8 +51,15 @@ public class ServerView extends javax.swing.JFrame implements ServerObserver{
     private javax.swing.JTextArea txaLog;
     // End of variables declaration//GEN-END:variables
 
+    
+    public void init(){
+        controller.initServer();
+    }
+    
     @Override
     public void log(String log) {
-        txaLog.append(log);
+        txaLog.append(log + "\n");
+        JScrollBar vertical = jScrollPane1.getVerticalScrollBar();
+        vertical.setValue(vertical.getMaximum());
     }
 }
